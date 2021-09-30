@@ -1,0 +1,4 @@
+ERROR - 2021-09-30 12:59:28 --> Unknown column 'created_at' in 'field list'
+ERROR - 2021-09-30 13:59:14 --> Unknown column 'created_at' in 'field list'
+ERROR - 2021-09-30 14:01:16 --> Unknown column 'created_at' in 'field list'
+ERROR - 2021-09-30 14:08:01 --> Unknown column 'created_at' in 'field list'

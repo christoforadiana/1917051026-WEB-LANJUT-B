@@ -44,7 +44,7 @@ $routes->get('/', function () {
 $routes->get('/admin', 'Templating::index');
 $routes->get('/admin/posts', 'AdminPostsController::index');
 $routes->get('/admin/posts/create', 'AdminPostsController::create');
-$routes->get('/admin/posts/store', 'AdminPostsController::store');
+$routes->post('/admin/posts/store', 'AdminPostsController::store');
 $routes->get('/register', 'TemplatingRegister::index');
 $routes->post('/saveRegister', 'Templating::saveRegister');
 $routes->get('/posts', 'PostController::index');

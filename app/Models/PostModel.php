@@ -11,4 +11,9 @@ class PostModel extends Model
     protected $allowedFields        = ['judul', 'deskripsi', 'gambar', 'author', 'kategori', 'slug', 'created_at', 'updated _at'];
     // Dates
     protected $useTimestamps        = true;
+
+    public function getPost($slug)
+    {
+        return $this->where(['slug' => $slug])->first();
+    }
 }

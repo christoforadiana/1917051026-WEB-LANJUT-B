@@ -1,4 +1,5 @@
 <?= $this->extend('templates'); ?>
+
 <?= $this->section('content'); ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -17,10 +18,7 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a href="/" class="nav-link">Home</a>
                 </li>
             </ul>
 
@@ -167,18 +165,6 @@
                     </div>
                 </div>
 
-                <!-- SidebarSearch Form -->
-                <!-- <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div> -->
-
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -192,7 +178,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item]">
+                        <li class="nav-item">
                             <a href="/admin/posts" class="nav-link">
                                 <i class="nav-icon fas fa-book-open"></i>
                                 <p>
@@ -214,7 +200,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">My Posts</h1>
+                            <h1 class="m-0">My posts</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -225,70 +211,71 @@
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
             </div>
-            <section class="content">
+            <!-- /.content-header -->
 
-                <?php if (session()->getFlashdata('pesan')) : ?>
-                    <div class="alert alert-success" role="alert">
-                        <?= session()->getFlashdata('pesan'); ?>
+            <!-- Main Content -->
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        Form Edit Post
                     </div>
-                <?php endif; ?>
-                <?php if (session()->getFlashdata('pesan1')) : ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?= session()->getFlashdata('pesan1'); ?>
-                    </div>
-                <?php endif; ?>
-
-                <!-- /.content-header -->
-                <div class="container">
-                    <a href="/admin/posts/create" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Data</a>
-                    <div class="card mt-3">
-                        <div class="card-header">
-                            Daftar Postingan
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped text-center">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">No.</th>
-                                            <th scope="col">Judul</th>
-                                            <th scope="col">Slug</th>
-                                            <th scope="col">Author</th>
-                                            <th scope="col">Kategori</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($posts as $i => $post) : ?>
-                                            <tr>
-                                                <th scope="row"><?= $i + 1; ?></th>
-                                                <td><?= $post['judul'] ?></td>
-                                                <td><?= $post['slug'] ?></td>
-                                                <td><?= $post['author'] ?></td>
-                                                <td><?= $post['kategori'] ?></td>
-                                                <td align="center">
-                                                    <!-- <a href="/admin/posts/edit/<?= $post['slug']; ?>" class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"></i>Edit</a>
-                                                <a href="/admin/posts/delete/<?= $post['slug']; ?>" class="btn btn-sm btn-danger me-1"><i class="fas fa-trash"></i>Delete</a> -->
-                                                    <a href="posts/edit/<?= $post['slug']; ?>" class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"></i> Edit</a>
-
-                                                    <form action="/admin/posts/<?= $post['post_id']; ?>" method="post" class="d-inline">
-                                                        <? csrf_field(); ?>
-                                                        <input type="hidden" name="_method" value="DELETE">
-                                                        <button type="submit" class="btn btn-sm btn-danger me-1" onclick="return confirm('Apakah anda ingin menghapus?');">
-                                                            <i class="fas fa-trash"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                    <div class="card-body">
+                        <form action="/admin/posts/update/<?= $post['post_id'] ?>" method="POST">
+                            <?= csrf_field(); ?>
+                            <input type="hidden" name="slug" value="<?= $post['slug']; ?>">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="judul">Judul Postingan</label>
+                                        <input type="text" class="form-control <?= ($validation->hasError('judul')) ? "is-invalid" : ""; ?>" id="judul" name="judul" value="<?= (old('judul')) ? old('judul') : $post['judul']; ?>">
+                                        <?php if ($validation->hasError('judul')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('judul'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="slug">slug</label>
+                                        <input type="text" class="form-control <?= ($validation->hasError('slug')) ? "is-invalid" : ""; ?>" id="slug" name="slug" value="<?= (old('slug')) ? old('slug') : $post['slug']; ?>">
+                                        <?php if ($validation->hasError('slug')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('slug'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kategori">Kategori Postingan</label>
+                                        <input type="text" class="form-control <?= ($validation->hasError('kategori')) ? "is-invalid" : ""; ?>" id="kategori" name="kategori" value="<?= (old('kategori')) ? old('kategori') : $post['kategori']; ?>">
+                                        <?php if ($validation->hasError('kategori')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('kategori'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="author">Author</label>
+                                        <input type="text" class="form-control <?= ($validation->hasError('author')) ? "is-invalid" : ""; ?>" id="author" name="author" value="<?= (old('author')) ? old('author') : $post['author']; ?>">
+                                        <?php if ($validation->hasError('author')) : ?>
+                                            <div class="invalid-feedback">
+                                                <?= $validation->getError('author'); ?>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="deskripsi">Deskripsi Postingan</label>
+                                    <br>
+                                    <textarea name="deskripsi" id="deskripsi"><?= (old('deskripsi')) ? old('deskripsi') : $post['deskripsi']; ?></textarea>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </section>
-            <!-- /.content -->
+            </div>
+            <!-- Main Content -->
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
@@ -306,4 +293,11 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+
+    <?= $this->endSection(); ?>
+
+    <?= $this->section('myscript'); ?>
+    <script>
+        $('#deskripsi').summernote()
+    </script>
     <?= $this->endSection(); ?>
